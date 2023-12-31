@@ -7,7 +7,7 @@ Bullet::Bullet()
     enemyPosition = sf::Vector2f(500.0f, 0.0f);
 }
 
-void Bullet::Update(Player& playerChar)
+void Bullet::Update(Player& playerChar, Enemy& enemy)
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
@@ -21,7 +21,7 @@ void Bullet::Update(Player& playerChar)
 
     for (int i = 0; i < ammo.size(); i++)
     {
-        sf::Vector2f bulletDirection = enemyPosition - playerChar.getPosition();
+        sf::Vector2f bulletDirection = enemy.getPosition() - playerChar.getPosition();
         sf::Vector2f normalizedBulletDir = vectorNormalize(bulletDirection);
         ammo[i].setPosition(ammo[i].getPosition() + normalizedBulletDir);
     }
