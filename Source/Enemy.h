@@ -4,11 +4,15 @@
 
 class Enemy
 {
+	//Member variables
 private:
 	sf::Texture texture;
 	sf::Sprite sprite;
+public:
 	sf::RectangleShape bbox;
 
+	//Member functions
+private:
 public:
 
 	void Initialize();

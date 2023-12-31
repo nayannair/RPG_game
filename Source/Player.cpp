@@ -30,7 +30,7 @@ void Player::Load()
         std::cout << "Character texture loading failed!\n";
 }
 
-void Player::Update(float deltaTime)
+void Player::Update(float deltaTime, Enemy& enemyObj)
 {
     sf::Vector2f position = sprite.getPosition();
 
@@ -52,6 +52,7 @@ void Player::Update(float deltaTime)
     }
 
     bbox.setPosition(sprite.getPosition());
+    checkCollision(enemyObj);
 }
 
 void Player::Draw(sf::RenderWindow& window)
@@ -63,4 +64,20 @@ void Player::Draw(sf::RenderWindow& window)
 sf::Vector2f Player::getPosition()
 {
     return sprite.getPosition();
+}
+
+/*To check collision with provided enemy object*/
+void Player::checkCollision(Enemy& enemyObj)
+{
+    sf::FloatRect enemyBound =  enemyObj.bbox.getGlobalBounds();
+    sf::FloatRect playerBound = bbox.getGlobalBounds();
+
+    if (enemyBound.intersects(playerBound))
+    {
+        std::cout << "Collision Detected!!\n";
+    }
+    else
+    {
+        //std::cout << "No Collision Detected\n";
+    }
 }

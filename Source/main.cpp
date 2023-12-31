@@ -72,12 +72,12 @@ int main()
         /**************************** Update ********************************/
 
         sf::Time deltaTimeTimer = clock.restart();
-        float deltaTime = deltaTimeTimer.asMilliseconds();
+        float deltaTime = deltaTimeTimer.asMicroseconds();
 
-        float framerate = 1000 / deltaTime;
+        float framerate = 1000000 / deltaTime;
 
         // Player
-        playerChar.Update(deltaTime);
+        playerChar.Update(deltaTime,firstEnemy);
 
         //Bullet
         playerbullet.Update(playerChar,firstEnemy,deltaTime);
@@ -108,7 +108,6 @@ int main()
 
     }
 
-       
 
     return 0;
 }
