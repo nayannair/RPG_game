@@ -2,6 +2,15 @@
 #include <iostream>
 
 
+void Enemy::Initialize()
+{
+    bbox.setOutlineThickness(2.0f);
+    bbox.setOutlineColor(sf::Color::Red);
+    bbox.setFillColor(sf::Color::Transparent);
+    bbox.setSize(sf::Vector2f(41, 36));
+    bbox.setScale(2, 2);
+}
+
 void Enemy::Load()
 {
     if (texture.loadFromFile("Assets/Enemy/Texture/MainGuySpriteSheet.png"))
@@ -23,12 +32,13 @@ void Enemy::Load()
 
 void Enemy::Update()
 {
-    
+    bbox.setPosition(sprite.getPosition());
 }
 
 void Enemy::Draw(sf::RenderWindow& window)
 {
     window.draw(sprite);
+    window.draw(bbox);
 }
 
 sf::Vector2f Enemy::getPosition()

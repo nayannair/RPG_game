@@ -4,7 +4,8 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
-
+#include "Text.h"
+#include "Framerate.h"
 
 
 int main()
@@ -13,6 +14,7 @@ int main()
     
     sf::RenderWindow window(sf::VideoMode(960,540), "RPG Game");
     sf::Event event;
+    window.setFramerateLimit(60);
 
     /******************** Render Window *************************/
 
@@ -21,6 +23,7 @@ int main()
     /******************** Load Player Sprite/Texture *************************/
 
     Player playerChar;
+    playerChar.Initialize();
     playerChar.Load();
 
     /******************** Load Player Sprite/Texture *************************/
@@ -34,11 +37,26 @@ int main()
     /***************************** Enemy Sprite *****************************/
     
     Enemy firstEnemy;
+    firstEnemy.Initialize();
     firstEnemy.Load();
 
     /***************************** Enemy Sprite *****************************/
 
+    /******************** Text Components *************************/
 
+    //Text displayText;
+    //displayText.Load();
+
+    Framerate frameRateText;
+    frameRateText.Load();
+    
+    /******************** Text Components *************************/
+
+    /***************************** Clock *****************************/
+
+    sf::Clock clock;
+
+    /***************************** Clock *****************************/
 
     while (window.isOpen())
     {
@@ -53,11 +71,23 @@ int main()
 
         /**************************** Update ********************************/
 
+        sf::Time deltaTimeTimer = clock.restart();
+        float deltaTime = deltaTimeTimer.asMilliseconds();
+
+        float framerate = 1000 / deltaTime;
+
         // Player
-        playerChar.Update();
+        playerChar.Update(deltaTime);
 
         //Bullet
-        playerbullet.Update(playerChar,firstEnemy);
+        playerbullet.Update(playerChar,firstEnemy,deltaTime);
+
+        //Enemy
+        firstEnemy.Update();
+
+        //Text Components
+        //displayText.Update();
+        frameRateText.Update(framerate);
 
         /**************************** Update ********************************/
 
@@ -69,6 +99,8 @@ int main()
         playerChar.Draw(window);
         playerbullet.Draw(window);
         firstEnemy.Draw(window);
+        //displayText.Draw(window);
+        frameRateText.Draw(window);
 
         window.display();
 

@@ -9,10 +9,13 @@ class Bullet
 private:
 	std::vector<sf::CircleShape> ammo;
 	sf::Vector2f enemyPosition;
+	float speed;
+	sf::RectangleShape bbox;
+
 public:
 	Bullet();
 	void Load();
-	void Update(Player& playerChar, Enemy& enemy);
+	void Update(Player& playerChar, Enemy& enemy, float deltaTime);
 	void Draw(sf::RenderWindow& window);
 };
 

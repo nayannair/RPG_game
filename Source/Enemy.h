@@ -7,10 +7,11 @@ class Enemy
 private:
 	sf::Texture texture;
 	sf::Sprite sprite;
+	sf::RectangleShape bbox;
 
 public:
 
-
+	void Initialize();
 	void Load();
 	void Update();
 	void Draw(sf::RenderWindow& window);
