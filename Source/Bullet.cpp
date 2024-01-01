@@ -3,83 +3,44 @@
 
 Bullet::Bullet()
 {
-	ammo.reserve(10);
-    enemyPosition = sf::Vector2f(500.0f, 0.0f);
-    speed = 0.0005f;
+    speed = 0.0005f;  
+    bulletSprite.setRadius(5.0f);
+    bulletSprite.setFillColor(sf::Color::Red);
 
-    bbox.reserve(10);
-    bulletDirection.reserve(10);
-    
+    bbox.setSize(sf::Vector2f(5.0f, 5.0f));
+    //bbox.setOutlineThickness(2.0f);
+    //bbox.setOutlineColor(sf::Color::White);
+    //bbox.setFillColor(sf::Color::Transparent);
 }
 
-void Bullet::Update(Player& playerChar, Enemy& enemy, float deltaTime)
+void Bullet::setDirection(sf::Vector2f& bulletDir)
 {
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        sf::CircleShape newBullet(5.0f);
-        newBullet.setPosition(playerChar.getPosition() + sf::Vector2f(41.0 / 2, 36.0 / 2));
-        newBullet.setFillColor(sf::Color::Red);
-        ammo.push_back(newBullet);
-
-        sf::RectangleShape newBbox(sf::Vector2f(5.0f, 5.0f));
-        newBbox.setOutlineThickness(2.0f);
-        newBbox.setOutlineColor(sf::Color::White);
-        newBbox.setFillColor(sf::Color::Transparent);
-        newBbox.setSize(sf::Vector2f(5.0f, 5.0f));
-        bbox.push_back(newBbox);
-
-        sf::Vector2f newBulletDir = enemy.getPosition() - playerChar.getPosition();
-        bulletDirection.push_back(newBulletDir);
-    }
-
-    for (int i = 0; i < ammo.size(); i++)
-    {
-        sf::Vector2f normalizedBulletDir = vectorNormalize(bulletDirection[i]);
-        ammo[i].setPosition(ammo[i].getPosition() + normalizedBulletDir * deltaTime * speed);
-        bbox[i].setPosition(ammo[i].getPosition());
-    }
-
-    //Check Collision for bullets
-    this->checkCollision(enemy);
-
+    bulletDirection = bulletDir;
 }
 
-void Bullet::Draw(sf::RenderWindow& window)
+void Bullet::setPosition(sf::Vector2f& bulletPos)
 {
-    for (int i = 0; i < ammo.size(); i++)
-    {
-        window.draw(ammo[i]);
-    }
-
+    bulletSprite.setPosition(bulletPos);
 }
 
-void Bullet::checkCollision(Enemy& enemyObj)
+void Bullet::Update(float deltaTime)
 {
-    sf::FloatRect enemyBound = enemyObj.bbox.getGlobalBounds();
-    
-    for (int i = 0; i < ammo.size(); i++)
-    {
-        sf::FloatRect bulletBound = bbox[i].getGlobalBounds();
+    sf::Vector2f normalizedBulletDir = vectorNormalize(bulletDirection);
+    bulletSprite.setPosition(bulletSprite.getPosition() + normalizedBulletDir * deltaTime * speed);
+    bbox.setPosition(bulletSprite.getPosition());
+}
 
-        if (enemyBound.intersects(bulletBound))
-        {
-            std::cout << "Bullet collided with enemy!!\n";
-          
-            //Delete bullet from ammo, its corresponding bbox and bullet directio
-            std::swap(ammo[i], ammo[ammo.size() - 1]);
-            ammo.pop_back();
-            std::swap(bbox[i], bbox[bbox.size() - 1]);
-            bbox.pop_back();
-            std::swap(bulletDirection[i], bulletDirection[bulletDirection.size() - 1]);
-            bulletDirection.pop_back();
-            i--;
+const sf::CircleShape& Bullet::Draw()
+{
+    return bulletSprite;
+}
 
+const sf::FloatRect& Bullet::getGlobalBounds()
+{
+    return bbox.getGlobalBounds();
+}
 
-        }
-        else
-        {
-            //std::cout << "Bullet shooting through empty space...\n";
-        }
-    }
-    
+const sf::Vector2f& Bullet::getPosition()
+{
+    return bulletSprite.getPosition();
 }

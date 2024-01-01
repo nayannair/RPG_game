@@ -25,7 +25,6 @@ public:
 
 	sf::Vector2f getPosition();
 	void checkCollision(Enemy& enemyObj);
-
 	
 };
 

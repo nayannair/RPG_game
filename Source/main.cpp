@@ -2,10 +2,10 @@
 #include <iostream>
 #include <math.h>
 #include "Player.h"
-#include "Bullet.h"
 #include "Enemy.h"
 #include "Text.h"
 #include "Framerate.h"
+#include "BulletManager.h"
 
 
 int main()
@@ -30,8 +30,8 @@ int main()
 
     /***************************** Bullet Sprite *****************************/
 
-    Bullet playerbullet;
-
+    BulletManager bulletManager;
+    bulletManager.Load();
     /***************************** Bullet Sprite *****************************/
 
     /***************************** Enemy Sprite *****************************/
@@ -80,7 +80,13 @@ int main()
         playerChar.Update(deltaTime,firstEnemy);
 
         //Bullet
-        playerbullet.Update(playerChar,firstEnemy,deltaTime);
+
+        sf::Vector2f mousePos;
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            mousePos = (sf::Vector2f)sf::Mouse::getPosition(window);
+        }
+        bulletManager.Update(playerChar,mousePos,firstEnemy,deltaTime);
 
         //Enemy
         firstEnemy.Update();
@@ -97,9 +103,9 @@ int main()
         window.clear(sf::Color::Green);
 
         playerChar.Draw(window);
-        playerbullet.Draw(window);
+        bulletManager.Draw(window);
         firstEnemy.Draw(window);
-        //displayText.Draw(window);
+
         frameRateText.Draw(window);
 
         window.display();
